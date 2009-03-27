@@ -20,7 +20,7 @@ public class MyProvider implements SomeContract {
 -----------------------------------
 
 
-  You get the <<<META-INF/services/com.example.SomeContract>> file whose content is <<<org.acme.MyProvider>>>.
+  You get the <<<META-INF/services/com.example.SomeContract>>> file whose content is <<<org.acme.MyProvider>>>.
 
   If you have multiple interfaces and/or base type, the library cannot infer the contract type.
   In such a case, specify the contract type explicitly by giving it to <<<@MetaInfServices>>> like this:
