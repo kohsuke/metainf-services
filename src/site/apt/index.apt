@@ -1,0 +1,53 @@
+What is this?
+
+  This tiny library is an annotation processor that automatically generates <<<META-INF/services/*>>>
+  file from annotations that you placed on your source code, thereby eliminating the need for you
+  to do it by yourself.
+
+Usage
+
+  On classes that you'd like listed as service providers, put @MetaInfServices annotation.
+  As long as you only have one interface or one super class, that type is assumed to be the contract.
+  So given the example below:
+
+-----------------------------------
+import org.kohsuke.MetaInfServices
+
+@MetaInfServices
+public class MyProvider implements SomeContract {
+  ...
+}
+-----------------------------------
+
+
+  You get the <<<META-INF/services/com.example.SomeContract>> file whose content is <<<org.acme.MyProvider>>>.
+
+  If you have multiple interfaces and/or base type, the library cannot infer the contract type.
+  In such a case, specify the contract type explicitly by giving it to <<<@MetaInfServices>>> like this:
+
+-----------------------------------
+import org.kohsuke.MetaInfServices
+
+@MetaInfServices(ContractType.class)
+public class MyProvider extends AbstractSet implements Comparable, Serializable, Closeable {
+  ...
+}
+-----------------------------------
+
+  When you use <<<javac>>> in JavaSE6, <<<META-INF/services/*>>> files are generated automatically.
+  No additional compiler switches are necessary. This library handles incremental compilation correctly, too.
+
+
+Tips for Maven users
+
+  <<<metainf-services.jar>>> is only necessary during the compilation, so specify it as an optional
+  dependency to avoid having the jar in the runtime. This will save 6KB in the runtime footprint.
+
+-----------------------------------
+<dependency>
+  <groupId>org.kohsuke.metainf-services</groupId>
+  <artifactId>metainf-services</artifactId>
+  <version>1.0</version>
+  <optional>true</optional>
+</dependency>
+-----------------------------------
