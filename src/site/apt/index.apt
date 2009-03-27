@@ -11,7 +11,7 @@ Usage
   So given the example below:
 
 -----------------------------------
-import org.kohsuke.MetaInfServices
+import org.kohsuke.MetaInfServices;
 
 @MetaInfServices
 public class MyProvider implements SomeContract {
@@ -26,7 +26,7 @@ public class MyProvider implements SomeContract {
   In such a case, specify the contract type explicitly by giving it to <<<@MetaInfServices>>> like this:
 
 -----------------------------------
-import org.kohsuke.MetaInfServices
+import org.kohsuke.MetaInfServices;
 
 @MetaInfServices(ContractType.class)
 public class MyProvider extends AbstractSet implements Comparable, Serializable, Closeable {
