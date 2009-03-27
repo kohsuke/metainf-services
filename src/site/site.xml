@@ -10,6 +10,7 @@
     <menu name="META-INF/services generator">
       <item name="Usage" href="index.html"/>
 
+      <item name="Dwonload" href="http://download.java.net/maven/2/org/kohsuke/metainf-services/metainf-services/"/>
       <item name="Mailing lists" href="servlets/ProjectMailingListList"/>
       <item name="Source code" href="source/browse/trunk/metainf-services/"/>
       <item name="Issues" href="servlets/ProjectIssues"/>
