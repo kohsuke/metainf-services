@@ -47,7 +47,7 @@ Tips for Maven users
 <dependency>
   <groupId>org.kohsuke.metainf-services</groupId>
   <artifactId>metainf-services</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <optional>true</optional>
 </dependency>
 -----------------------------------
