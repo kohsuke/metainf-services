@@ -101,7 +101,7 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
             TypeMirror m = e.getTypeMirror();
             if (m.getKind()== TypeKind.VOID) {
                 // contract inferred from the signature
-                boolean hasBaseClass = type.getSuperclass().getKind()!=TypeKind.NONE;
+                boolean hasBaseClass = type.getSuperclass().getKind()!=TypeKind.NONE && !isObject(type.getSuperclass());
                 boolean hasInterfaces = !type.getInterfaces().isEmpty();
                 if(hasBaseClass^hasInterfaces) {
                     if(hasBaseClass)
@@ -123,6 +123,14 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         }
 
 
+    }
+
+    private boolean isObject(TypeMirror t) {
+        if (t instanceof DeclaredType) {
+            DeclaredType dt = (DeclaredType) t;
+            return((TypeElement)dt.asElement()).getQualifiedName().toString().equals("java.lang.Object");
+        }
+        return false;
     }
 
     private void error(Element source, String msg) {
