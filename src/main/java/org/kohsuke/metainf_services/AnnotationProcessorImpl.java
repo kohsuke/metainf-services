@@ -101,7 +101,7 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
             TypeMirror m = e.getTypeMirror();
             if (m.getKind()== TypeKind.VOID) {
                 // contract inferred from the signature
-                boolean hasBaseClass = type.getSuperclass().getKind() == TypeKind.NONE;
+                boolean hasBaseClass = type.getSuperclass().getKind()!=TypeKind.NONE;
                 boolean hasInterfaces = !type.getInterfaces().isEmpty();
                 if(hasBaseClass^hasInterfaces) {
                     if(hasBaseClass)
