@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>META-INF/services generator - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/1024px.css");
+      @import url("./css/site.css");
+    </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body>
+    <div id="wrap2"><div id="wrap">
+    <div id="header">
+      <p id="toplinks">Skip to: <a href="#content">Content</a> | <a href="#sidebar">Navigation</a> | <a href="#footer">Footer</a></p>
+		
+            <h1 id="bannerLeft">
+    
+            META-INF/services generator
+    
+        </h1>
+                
+      <p id="slogan">${project.description}</p>
+    </div>
+    <div id="breadcrumbs">
+      <div class="xright">  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+
+    <div id="sidebar">
+      <div id="navcolumn">
+              <h2>
+          META-INF/services generator
+        </h2><ul>
+              
+    <li class="none">
+              <strong>Usage</strong>
+        </li>
+              
+    <li class="none">
+              <a href="https://github.com/kohsuke/metainf-services">Source code</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://java.net/jira/browse/METAINF_SERVICES">Issues</a>
+        </li>
+          </ul>
+      <h2>
+          Project Documentation
+        </h2><ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">Project Information</a>
+              </li>
+          </ul>
+        </div>
+    </div>
+    <div id="content">
+      <div id="contentBox">
+        <div class="section"><h2>What is this?</h2>
+<p>This tiny library is an annotation processor that automatically generates <tt>META-INF/services/*</tt> file from annotations that you placed on your source code, thereby eliminating the need for you to do it by yourself.</p>
+</div>
+<div class="section"><h2>Usage</h2>
+<p>On classes that you'd like listed as service providers, put @MetaInfServices annotation. As long as you only have one interface or one super class, that type is assumed to be the contract. So given the example below:</p>
+<div class="source"><pre>import org.kohsuke.MetaInfServices;
+
+@MetaInfServices
+public class MyProvider implements SomeContract {
+  ...
+}</pre>
+</div>
+<p>You get the <tt>META-INF/services/com.example.SomeContract</tt> file whose content is <tt>org.acme.MyProvider</tt>.</p>
+<p>If you have multiple interfaces and/or base type, the library cannot infer the contract type. In such a case, specify the contract type explicitly by giving it to <tt>@MetaInfServices</tt> like this:</p>
+<div class="source"><pre>import org.kohsuke.MetaInfServices;
+
+@MetaInfServices(ContractType.class)
+public class MyProvider extends AbstractSet implements Comparable, Serializable, Closeable {
+  ...
+}</pre>
+</div>
+<p>When you use <tt>javac</tt> in JavaSE6, <tt>META-INF/services/*</tt> files are generated automatically. No additional compiler switches are necessary. This library handles incremental compilation correctly, too.</p>
+</div>
+<div class="section"><h2>Tips for Maven users</h2>
+<p><tt>metainf-services.jar</tt> is only necessary during the compilation, so specify it as an optional dependency to avoid having the jar in the runtime. This will save 6KB in the runtime footprint.</p>
+<div class="source"><pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.kohsuke.metainf-services&lt;/groupId&gt;
+  &lt;artifactId&gt;metainf-services&lt;/artifactId&gt;
+  &lt;version&gt;1.1&lt;/version&gt;
+  &lt;optional&gt;true&lt;/optional&gt;
+&lt;/dependency&gt;</pre>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2011
+    
+          
+  
+
+  
+  
+  &nbsp;| Last Published: 06/27/2011
+  &nbsp;| Version: 1.2-SNAPSHOT
+</div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    </div></div>
+  </body>
+</html>
