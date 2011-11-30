@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,8 +66,12 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         Map<String,Set<String>> services = new HashMap<String, Set<String>>();
 
         // discover services from the current compilation sources
-        for (TypeElement type : (Collection<TypeElement>)roundEnv.getElementsAnnotatedWith(MetaInfServices.class)) {
-            TypeElement contract = getContract(type);
+        for (Element e : roundEnv.getElementsAnnotatedWith(MetaInfServices.class)) {
+            MetaInfServices a = e.getAnnotation(MetaInfServices.class);
+            if(a==null) continue; // input is malformed, ignore
+            if (!e.getKind().isClass() && !e.getKind().isInterface()) continue; // ditto
+            TypeElement type = (TypeElement)e;
+            TypeElement contract = getContract(type, a);
             if(contract==null)  continue; // error should have already been reported
 
             String cn = contract.getQualifiedName().toString();
@@ -114,10 +117,9 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         return false;
     }
 
-    private TypeElement getContract(TypeElement type) {
+    private TypeElement getContract(TypeElement type, MetaInfServices a) {
         // explicitly specified?
         try {
-            MetaInfServices a = type.getAnnotation(MetaInfServices.class);
             a.value();
             throw new AssertionError();
         } catch (MirroredTypeException e) {
