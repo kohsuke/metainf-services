@@ -10,7 +10,7 @@
     <menu name="META-INF/services generator">
       <item name="Usage" href="index.html"/>
 
-      <!--item name="Dwonload" href="http://download.java.net/maven/2/org/kohsuke/metainf-services/metainf-services/"/-->
+      <item name="Download"               href="http://mvnrepository.com/artifact/${project.groupId}/${project.artifactId}"/>
       <item name="Source code" href="https://github.com/kohsuke/metainf-services"/>
       <item name="Issues" href="http://java.net/jira/browse/METAINF_SERVICES"/>
     </menu>
