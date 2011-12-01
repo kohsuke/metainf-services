@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.kohsuke.metainf-services</groupId>
   <artifactId>metainf-services</artifactId>
-  <version>1.3</version>  
+  <version>1.4-SNAPSHOT</version>  
   <name>META-INF/services generator</name>
   <description>Annotation-driven META-INF/services auto-generation</description>
   <url>http://metainf-srvices.kohsuke.org/</url>
