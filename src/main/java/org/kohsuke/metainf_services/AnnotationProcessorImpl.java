@@ -34,6 +34,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -64,6 +65,8 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         if (roundEnv.processingOver())      return false;
 
         Map<String,Set<String>> services = new HashMap<String, Set<String>>();
+        
+        Elements elements = processingEnv.getElementUtils();
 
         // discover services from the current compilation sources
         for (Element e : roundEnv.getElementsAnnotatedWith(MetaInfServices.class)) {
@@ -74,11 +77,11 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
             TypeElement contract = getContract(type, a);
             if(contract==null)  continue; // error should have already been reported
 
-            String cn = contract.getQualifiedName().toString();
+            String cn = elements.getBinaryName(contract).toString();
             Set<String> v = services.get(cn);
             if(v==null)
                 services.put(cn,v=new TreeSet<String>());
-            v.add(type.getQualifiedName().toString());
+            v.add(elements.getBinaryName(type).toString());
         }
 
         // also load up any existing values, since this compilation may be partial
