@@ -5,7 +5,7 @@
   <version>1.5-SNAPSHOT</version>  
   <name>META-INF/services generator</name>
   <description>Annotation-driven META-INF/services auto-generation</description>
-  <url>http://metainf-srvices.kohsuke.org/</url>
+  <url>http://metainf-services.kohsuke.org/</url>
 
   <scm>
     <connection>scm:git:git@github.com/kohsuke/${project.artifactId}.git</connection>
