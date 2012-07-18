@@ -23,11 +23,22 @@
  */
 package org.kohsuke.metainf_services;
 
-import org.kohsuke.MetaInfServices;
-
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -38,27 +49,15 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import org.kohsuke.MetaInfServices;
 
 /**
  * @author Kohsuke Kawaguchi
  */
 @SuppressWarnings({"Since15"})
+@SupportedAnnotationTypes("org.kohsuke.MetaInfServices")
+@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class AnnotationProcessorImpl extends AbstractProcessor {
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return Collections.singleton(MetaInfServices.class.getName());
-    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
