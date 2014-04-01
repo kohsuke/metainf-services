@@ -37,7 +37,6 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -56,8 +55,11 @@ import org.kohsuke.MetaInfServices;
  */
 @SuppressWarnings({"Since15"})
 @SupportedAnnotationTypes("org.kohsuke.MetaInfServices")
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class AnnotationProcessorImpl extends AbstractProcessor {
+
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
+    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
