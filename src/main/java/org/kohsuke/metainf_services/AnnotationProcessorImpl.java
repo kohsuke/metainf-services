@@ -37,7 +37,6 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -56,8 +55,19 @@ import org.kohsuke.MetaInfServices;
  */
 @SuppressWarnings({"Since15"})
 @SupportedAnnotationTypes("org.kohsuke.MetaInfServices")
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class AnnotationProcessorImpl extends AbstractProcessor {
+
+    @Override public SourceVersion getSupportedSourceVersion() {
+        try {
+            // Seems to work. Probably could use some additional error checks, but current code does not even verify that the class is assignable to an explicitly specified type!
+            // Need to add unit tests. See stapler/stapler/core/src/test/java/org/kohsuke/stapler/jsr269/ for examples.
+            return SourceVersion.valueOf("RELEASE_8");
+        } catch (IllegalArgumentException x) {}
+        try {
+            return SourceVersion.valueOf("RELEASE_7");
+        } catch (IllegalArgumentException x) {}
+        return SourceVersion.RELEASE_6;
+    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
