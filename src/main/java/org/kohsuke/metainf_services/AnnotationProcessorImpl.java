@@ -72,6 +72,7 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver())      return false;
+        // TODO should not write anything until processingOver
 
         Map<String,Set<String>> services = new HashMap<String, Set<String>>();
         
