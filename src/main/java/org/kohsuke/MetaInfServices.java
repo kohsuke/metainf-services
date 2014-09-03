@@ -46,4 +46,11 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 public @interface MetaInfServices {
     Class value() default void.class;
+
+    /**
+     * The priority of this service provider; higher numbers mean higher priority.  The default priority is 0.
+     *
+     * @return the priority
+     */
+    int priority() default 0;
 }

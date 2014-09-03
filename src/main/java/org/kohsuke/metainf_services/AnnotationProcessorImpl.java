@@ -23,6 +23,8 @@
  */
 package org.kohsuke.metainf_services;
 
+import static java.lang.Integer.signum;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -74,7 +76,7 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         if (roundEnv.processingOver())      return false;
         // TODO should not write anything until processingOver
 
-        Map<String,Set<String>> services = new HashMap<String, Set<String>>();
+        Map<String,Set<Registration>> services = new HashMap<String, Set<Registration>>();
         
         Elements elements = processingEnv.getElementUtils();
 
@@ -88,22 +90,22 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
             if(contract==null)  continue; // error should have already been reported
 
             String cn = elements.getBinaryName(contract).toString();
-            Set<String> v = services.get(cn);
+            Set<Registration> v = services.get(cn);
             if(v==null)
-                services.put(cn,v=new TreeSet<String>());
-            v.add(elements.getBinaryName(type).toString());
+                services.put(cn,v=new TreeSet<Registration>());
+            v.add(new Registration(a.priority(), elements.getBinaryName(type).toString()));
         }
 
         // also load up any existing values, since this compilation may be partial
         Filer filer = processingEnv.getFiler();
-        for (Map.Entry<String,Set<String>> e : services.entrySet()) {
+        for (Map.Entry<String,Set<Registration>> e : services.entrySet()) {
             try {
                 String contract = e.getKey();
                 FileObject f = filer.getResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/services/" +contract);
                 BufferedReader r = new BufferedReader(new InputStreamReader(f.openInputStream(), "UTF-8"));
                 String line;
                 while((line=r.readLine())!=null)
-                    e.getValue().add(line);
+                    e.getValue().add(new Registration(0, line));
                 r.close();
             } catch (FileNotFoundException x) {
                 // doesn't exist
@@ -113,14 +115,14 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         }
 
         // now write them back out
-        for (Map.Entry<String,Set<String>> e : services.entrySet()) {
+        for (Map.Entry<String,Set<Registration>> e : services.entrySet()) {
             try {
                 String contract = e.getKey();
                 processingEnv.getMessager().printMessage(Kind.NOTE,"Writing META-INF/services/"+contract);
                 FileObject f = filer.createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/services/" +contract);
                 PrintWriter pw = new PrintWriter(new OutputStreamWriter(f.openOutputStream(), "UTF-8"));
-                for (String value : e.getValue())
-                    pw.println(value);
+                for (Registration value : e.getValue())
+                    pw.println(value.getName());
                 pw.close();
             } catch (IOException x) {
                 processingEnv.getMessager().printMessage(Kind.ERROR,"Failed to write service definition files: "+x);
@@ -173,5 +175,29 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
 
     private void error(Element source, String msg) {
         processingEnv.getMessager().printMessage(Kind.ERROR,msg,source);
+    }
+
+    private static class Registration implements Comparable<Registration> {
+        private final String name;
+        private final int priority;
+
+        Registration(final int priority, final String name) {
+            this.priority = priority;
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getPriority() {
+            return priority;
+        }
+
+        public int compareTo(final Registration o) {
+            int res = signum(priority - o.priority);
+            if (res == 0) res = name.compareTo(o.name);
+            return res;
+        }
     }
 }
