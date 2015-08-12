@@ -45,5 +45,5 @@ import java.lang.annotation.Target;
 @Documented
 @Target(TYPE)
 public @interface MetaInfServices {
-    Class value() default void.class;
+    Class<?>[] value() default void.class;
 }
