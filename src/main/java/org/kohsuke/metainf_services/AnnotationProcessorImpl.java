@@ -29,7 +29,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -41,7 +44,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.MirroredTypesException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -75,7 +78,7 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         // TODO should not write anything until processingOver
 
         Map<String,Set<String>> services = new HashMap<String, Set<String>>();
-        
+
         Elements elements = processingEnv.getElementUtils();
 
         // discover services from the current compilation sources
@@ -84,14 +87,19 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
             if(a==null) continue; // input is malformed, ignore
             if (!e.getKind().isClass() && !e.getKind().isInterface()) continue; // ditto
             TypeElement type = (TypeElement)e;
-            TypeElement contract = getContract(type, a);
-            if(contract==null)  continue; // error should have already been reported
+            Collection<TypeElement> contracts = getContracts(type, a);
+            if(contracts.isEmpty())  continue; // error should have already been reported
+
+            for (TypeElement contract : contracts) {
 
             String cn = elements.getBinaryName(contract).toString();
             Set<String> v = services.get(cn);
             if(v==null)
                 services.put(cn,v=new TreeSet<String>());
             v.add(elements.getBinaryName(type).toString());
+
+            }
+
         }
 
         // also load up any existing values, since this compilation may be partial
@@ -130,37 +138,43 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
         return false;
     }
 
-    private TypeElement getContract(TypeElement type, MetaInfServices a) {
+    private Collection<TypeElement> getContracts(TypeElement type, MetaInfServices a) {
+        List<TypeElement> typeElementList = new ArrayList<TypeElement>();
+
         // explicitly specified?
         try {
             a.value();
             throw new AssertionError();
-        } catch (MirroredTypeException e) {
-            TypeMirror m = e.getTypeMirror();
+        } catch (MirroredTypesException e) {
+
+          for (TypeMirror m : e.getTypeMirrors()) {
             if (m.getKind()== TypeKind.VOID) {
                 // contract inferred from the signature
                 boolean hasBaseClass = type.getSuperclass().getKind()!=TypeKind.NONE && !isObject(type.getSuperclass());
                 boolean hasInterfaces = !type.getInterfaces().isEmpty();
                 if(hasBaseClass^hasInterfaces) {
                     if(hasBaseClass)
-                        return (TypeElement)((DeclaredType)type.getSuperclass()).asElement();
-                    return (TypeElement)((DeclaredType)type.getInterfaces().get(0)).asElement();
+                        typeElementList.add((TypeElement)((DeclaredType)type.getSuperclass()).asElement());
+                    else
+                        typeElementList.add((TypeElement)((DeclaredType)type.getInterfaces().get(0)).asElement());
+                    continue;
                 }
 
                 error(type, "Contract type was not specified, but it couldn't be inferred.");
-                return null;
+                continue;
             }
 
             if (m instanceof DeclaredType) {
                 DeclaredType dt = (DeclaredType) m;
-                return (TypeElement)dt.asElement();
+                typeElementList.add((TypeElement)dt.asElement());
+                continue;
             } else {
                 error(type, "Invalid type specified as the contract");
-                return null;
+                continue;
             }
+          }
         }
-
-
+        return typeElementList;
     }
 
     private boolean isObject(TypeMirror t) {
