@@ -115,6 +115,8 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
                 r.close();
             } catch (FileNotFoundException x) {
                 // doesn't exist
+            } catch (java.nio.file.NoSuchFileException x) {
+               // doesn't exist
             } catch (IOException x) {
                 processingEnv.getMessager().printMessage(Kind.ERROR,"Failed to load existing service definition files: "+x);
             }
