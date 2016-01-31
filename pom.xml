@@ -9,7 +9,7 @@
 
   <groupId>org.kohsuke.metainf-services</groupId>
   <artifactId>metainf-services</artifactId>
-  <version>1.7-SNAPSHOT</version>  
+  <version>1.7</version>  
   <name>META-INF/services generator</name>
   <description>Annotation-driven META-INF/services auto-generation</description>
   <url>http://metainf-services.kohsuke.org/</url>
@@ -18,7 +18,7 @@
     <connection>scm:git:git@github.com/kohsuke/${project.artifactId}.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/kohsuke/${project.artifactId}.git</developerConnection>
     <url>http://${project.artifactId}.kohsuke.org/</url>
-    <tag>HEAD</tag>
+    <tag>metainf-services-1.7</tag>
   </scm>
 
   <distributionManagement>
