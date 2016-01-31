@@ -7,7 +7,7 @@
 '/home/kohsuke/ws/metainf-services/target/checkout/src/main/java'
 -author
 -bottom
-'Copyright &#169; 2015. All Rights Reserved.'
+'Copyright &#169; 2016. All Rights Reserved.'
 -charset
 'UTF-8'
 -d
@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'META-INF/services generator 1.6 API'
+'META-INF/services generator 1.7 API'
 -link
 'http://java.sun.com/javase/6/docs/api'
 -use
 -version
 -windowtitle
-'META-INF/services generator 1.6 API'
+'META-INF/services generator 1.7 API'
