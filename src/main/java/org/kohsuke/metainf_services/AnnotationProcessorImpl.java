@@ -61,15 +61,7 @@ import org.kohsuke.MetaInfServices;
 public class AnnotationProcessorImpl extends AbstractProcessor {
 
     @Override public SourceVersion getSupportedSourceVersion() {
-        try {
-            // Seems to work. Probably could use some additional error checks, but current code does not even verify that the class is assignable to an explicitly specified type!
-            // Need to add unit tests. See stapler/stapler/core/src/test/java/org/kohsuke/stapler/jsr269/ for examples.
-            return SourceVersion.valueOf("RELEASE_8");
-        } catch (IllegalArgumentException x) {}
-        try {
-            return SourceVersion.valueOf("RELEASE_7");
-        } catch (IllegalArgumentException x) {}
-        return SourceVersion.RELEASE_6;
+        return SourceVersion.latestSupported();
     }
 
     @Override
