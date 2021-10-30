@@ -9,7 +9,7 @@
 
   <groupId>org.kohsuke.metainf-services</groupId>
   <artifactId>metainf-services</artifactId>
-  <version>1.9-SNAPSHOT</version>  
+  <version>1.9-SNAPSHOT</version>
   <name>META-INF/services generator</name>
   <description>Annotation-driven META-INF/services auto-generation</description>
   <url>http://metainf-services.kohsuke.org/</url>
@@ -45,7 +45,7 @@
           <source>1.6</source>
           <target>1.6</target>
           <compilerArgument>-proc:none</compilerArgument>
-         </configuration>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
@@ -64,33 +64,33 @@
         </executions>
       </plugin>
       <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>animal-sniffer-maven-plugin</artifactId>
-          <version>1.15</version>
-          <executions>
-              <execution>
-                  <phase>package</phase>
-                  <goals>
-                      <goal>check</goal>
-                  </goals>
-                  <configuration>
-                      <signature>
-                          <groupId>org.codehaus.mojo.signature</groupId>
-                          <artifactId>java16</artifactId>
-                          <version>1.0</version>
-                      </signature>
-                  </configuration>
-              </execution>
-          </executions>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>1.15</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <signature>
+                <groupId>org.codehaus.mojo.signature</groupId>
+                <artifactId>java16</artifactId>
+                <version>1.0</version>
+              </signature>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
 
   <licenses>
     <license>
-        <name>MIT license</name>
-        <url>http://www.opensource.org/licenses/mit-license.php</url>
-        <distribution>repo</distribution>
+      <name>MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
     </license>
   </licenses>
 </project>
