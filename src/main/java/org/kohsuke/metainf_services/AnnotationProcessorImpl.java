@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -105,10 +106,8 @@ public class AnnotationProcessorImpl extends AbstractProcessor {
                 while((line=r.readLine())!=null)
                     e.getValue().add(line);
                 r.close();
-            } catch (FileNotFoundException x) {
+            } catch (FileNotFoundException | NoSuchFileException x) {
                 // doesn't exist
-            } catch (java.nio.file.NoSuchFileException x) {
-               // doesn't exist
             } catch (IOException x) {
                 processingEnv.getMessager().printMessage(Kind.ERROR,"Failed to load existing service definition files: "+x);
             }
