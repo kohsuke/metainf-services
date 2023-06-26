@@ -30,10 +30,10 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that this class name should be listed into the <tt>META-INF/services/CONTRACTNAME</tt>.
+ * Indicates that this class name should be listed into the {@code META-INF/services/CONTRACTNAME}.
  *
  * <p>
- * If the class for which this annotation is placaed only have one base class or one interface,
+ * If the class for which this annotation is placed only have one base class or one interface,
  * then the CONTRACTNAME is the fully qualified name of that type.
  *
  * <p>
